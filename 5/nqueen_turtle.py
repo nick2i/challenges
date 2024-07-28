@@ -1,4 +1,5 @@
 import turtle
+import pprint
 
 SQUARE_LENGTH = 100
 
@@ -6,6 +7,15 @@ N_QUEENS = 8
 
 X_ORIGIN = (N_QUEENS * SQUARE_LENGTH) // 2
 Y_ORIGIN = (N_QUEENS * SQUARE_LENGTH) // 2 - SQUARE_LENGTH
+
+
+#board_colors = [[(1, 1, 1)] * N_QUEENS] * N_QUEENS
+board_colors = []
+for _i in range(N_QUEENS):
+    board_colors.append([])
+    for _j in range(N_QUEENS):
+        board_colors[_i].append((1,1,1))
+
 
 def c(x, y):
     return x - X_ORIGIN, y - Y_ORIGIN
@@ -59,6 +69,44 @@ def _debug_turtle_end():
         turtle.back(30)
         turtle.right(90)
 
+def _color_alpha(color, alpha):
+    return tuple(x * alpha for x in color)
+
+
+def _color_combine(c1, a1, c2):
+    # color 1, alpha 1, etc (a2 derived)
+    assert 0 <= a1 <= 1
+    a2 = 1 - a1
+    return tuple(map(sum, zip(_color_alpha(c1, a1), _color_alpha(c2, a2))))
+
+
+def color_square(x, y, color, opacity=0.2):
+    assert 0 <= y < len(board_colors)
+    assert 0 <= x < len(board_colors[0])
+    assert 0 <= opacity <= 1
+
+    '''
+    prior_color = board_colors[y][x]
+    prior_opacity = 1 - opacity
+    prior_color_alphad = _color_alpha(prior_color, prior_opacity)
+
+    new_color_alphad = _color_alpha(color, opacity)
+    '''
+    prior_color = board_colors[y][x]
+    board_colors[y][x] = _color_combine(color, opacity, prior_color)
+
+
+
+def render_board():
+    for y, row in enumerate(board_colors):
+        for x, cell in enumerate(row):
+            # turtle uses 1 for white and 0 for black, this is mathematically annoying
+            # so I am using 0 for white and 1 for black
+            #color = map(lambda c_rgb: 1 - c_rgb, cell)
+
+            # OR AM I?
+            color = cell
+            square(x * SQUARE_LENGTH, y * SQUARE_LENGTH, SQUARE_LENGTH, cell)
 
 def draw_board(n=N_QUEENS):
     for x_i in range(n):
@@ -81,19 +129,54 @@ def queen_sees(board_x, board_y):
 def place_queen(board_x, board_y):
     # ...
     # x = board_x * SQUARE_LENGTH
-    fillcolor = (0, 1, 0)
-    square(board_x * SQUARE_LENGTH, board_y * SQUARE_LENGTH, SQUARE_LENGTH, fillcolor)
+    q_color = (0, 1, 0)
+    seen_color = (1, 0, 0)
+    #square(board_x * SQUARE_LENGTH, board_y * SQUARE_LENGTH, SQUARE_LENGTH, fillcolor)
+    color_square(board_x, board_y, q_color)
 
+    diag1 = lambda x: (x - board_x) + board_y
+    diag2 = lambda x: -(x - board_x) + board_y
     # now I need to put the squares the queen sees...
     # to do so I need to know the dimensions of the board :(
+    for x in range(N_QUEENS):
+        if x == board_x:
+            # on the queen col, skiparooni
+            continue
+        y1 = diag1(x)
+        y2 = diag2(x)
+
+        if 0 <= y1 < N_QUEENS:
+            color_square(x, y1, seen_color, opacity=0.7)
+        if 0 <= y2 < N_QUEENS:
+            color_square(x, y2, seen_color, opacity=0.7)
+
+    debug_print()
+
     pass
 
 
+_STEP = 0
+def debug_print():
+    global _STEP
+    _STEP += 1
+    print(f"STEP {_STEP}")
+    pprint.pprint(board_colors)
 
 def main():
     _debug_turtle_init()
-    draw_board()
+    #draw_board()
+    render_board()
+    debug_print()
+
     place_queen(3, 5)
+    render_board()
+    place_queen(3, 6)
+    debug_print()
+    render_board()
+    place_queen(1, 2)
+    render_board()
+    place_queen(7, 7)
+    render_board()
     _debug_turtle_end()
     turtle.done()
 
