@@ -49,25 +49,26 @@ def int2roman3_prime(n):
 
 def int2roman3(n):
     t = [(lambda k, c: [(c[k//2], pow(10, k // 4)), (c[k//2:k//2+2], 4 * pow(10, k // 4)), (c[k//2], 5 * pow(10, k // 4)), (c[k//2-1:k//2+2:2], 9 * pow(10, k // 4))][k % 4])(j, "IVXLCDM") for j in range(13)][::-1]
-    import pprint
-    pprint.pprint(t)
-    r = list((s * (n // d) + ((n:=n%d) * 0) * "" for s, d in [(lambda k, c: [(c[k//2], pow(10, k // 4)), (c[k//2:k//2+2], 4 * pow(10, k // 4)), (c[k//2], 5 * pow(10, k // 4)), (c[k//2-1:k//2+2], 9 * pow(10, k // 4))][k % 4])(j, "IVXLCDM") for j in range(13)][::-1]))
-    pprint.pprint(r)
-    return "".join(s * (n // d) + ((n:=n%d) * 0) * "" for s, d in [(lambda k, c: [(c[k//2], pow(10, k // 4)), (c[k//2:k//2+2], 4 * pow(10, k // 4)), (c[k//2], 5 * pow(10, k // 4)), (c[k//2-1:k//2+2], 9 * pow(10, k // 4))][k % 4])(j, "IVXLCDM") for j in range(13)][::-1])
+    #import pprint
+    #pprint.pprint(t)
+    #r = list(((n, n // d,s * (n // d) + ((n:=n%d) * 0) * "") for s, d in [(lambda k, c: [(c[k//2], pow(10, k // 4)), (c[k//2:k//2+2], 4 * pow(10, k // 4)), (c[k//2], 5 * pow(10, k // 4)), (c[k//2-1:k//2+2:2], 9 * pow(10, k // 4))][k % 4])(j, "IVXLCDM") for j in range(13)][::-1]))
+    #pprint.pprint(r)
+    #return "".join([x[2] for x in r])
+    return "".join(s * (n // d) + ((n:=n%d) * 0) * "" for s, d in [(lambda k, c: [(c[k//2], pow(10, k // 4)), (c[k//2:k//2+2], 4 * pow(10, k // 4)), (c[k//2], 5 * pow(10, k // 4)), (c[k//2-1:k//2+2:2], 9 * pow(10, k // 4))][k % 4])(j, "IVXLCDM") for j in range(13)][::-1])
 
 
 
 def main():
     import random
-    for _ in range(10):
-        test = random.randint(1, 4000)
+    for test in range(4001):
+        #test = random.randint(1, 4000)
         roman = int2roman(test)
-        roman2 = int2roman2(test)
+        #roman2 = int2roman2(test)
         roman3 = int2roman3(test)
 
         if roman != roman3:
             print(f"OOF OOF OOF OOF OOF {roman = }\t\t{roman3 = }")
-        print(f"test = {test},\t\troman = {roman}")
+        #print(f"test = {test},\t\troman = {roman}")
 
 if __name__ == "__main__":
     main()
