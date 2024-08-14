@@ -49,9 +49,19 @@ def main():
     sorted_tests = [natural_sort(test) for test in tests]
     for test in tests:
         sorted_test = natural_sort(test)
-        print("Unordered:\t\t\t| Ordered:")
+        #print("Unordered:\t\t\t| Ordered:")
+        max_len = max(len(x) for x in test)
+        header = "\nUnordered: "
+        header += " " * (3 + max_len - len(header))
+        header += "| "
+        header += "Ordered:"
+        print(header)
         for unordered_item, ordered_item in zip(test, sorted_test):
-            print(f" {unordered_item}\t\t\t|  {ordered_item}")
+            row_entry = f" {unordered_item} "
+            row_entry += " " * (3 + max_len - len(row_entry))
+            row_entry += f"|  {ordered_item}"
+            print(row_entry)
+            #print(f" {unordered_item}\t\t\t|  {ordered_item}")
 
 if __name__ == "__main__":
     main()
