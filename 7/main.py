@@ -6,22 +6,6 @@ tests = [
     ["estimate-all-history-counts.xlsx", "estimate-cost-price-helper-sheet.xlsx", "estimate-stats(1).xlsx", "estimate-stats.xlsx"],
 ]
 
-def compare_fn(a, b):
-    for a_i, b_i in zip(a, b):
-        if a_i > b_i:
-            return 1
-        elif a_i < b_i:
-            return -1
-    
-    # longer items are ordered later
-    if len(a_i) > len(b_i):
-        return 1
-    elif len(b_i) > len(a_i):
-        return -1
-
-    # the items are ordered equivalently
-    return 0
-
 def split_item(s):
     # split item into numeric and non-numeric sections, preserving internal order
     # there's probably a nice regex way to do this e.g. with ([^0-9]*)([0-9]*)*
@@ -50,7 +34,6 @@ def split_item(s):
 
     return split
 
-
 def natural_sort(l):
     # for each item in l,
     #   split item into numeric and non-numeric sections, preserving internal order
@@ -60,6 +43,16 @@ def natural_sort(l):
     # to compare each element of the split item with each correspondingly
     # positioned element of the other, and if at any point the subitem comparison
     # is nonzero, that determines the overall comparison
-    pass
+    return sorted(l, key=split_item)
 
+def main():
+    sorted_tests = [natural_sort(test) for test in tests]
+    for test in tests:
+        sorted_test = natural_sort(test)
+        print("Unordered:\t\t\t| Ordered:")
+        for unordered_item, ordered_item in zip(test, sorted_test):
+            print(f" {unordered_item}\t\t\t|  {ordered_item}")
+
+if __name__ == "__main__":
+    main()
 
