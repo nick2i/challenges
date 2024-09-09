@@ -1,0 +1,17 @@
+A non-negative integer _n_ is a *Kaprekar number* if and only if its square can be split into two parts that add up to _n_. For instance, _n_ = 45 is a Kaprekar number, because
+
+```45 * 45 = 2025
+2025 splits into 20, 25
+20 + 25 = 45```
+
+The Kaprekar numbers are named after D. R. Kaprekar, an Indian schoolteacher and "recreational mathematician" of the early- to mid-20th century.
+
+Your program shall take as input two non-negative integers representing an inclusive range to scan for Kaprekar numbers, and your program should output the collection of Kaprekar numbers between the two.
+
+For example:
+
+```kaprekar(1, 50)   -->  9, 45
+kaprekar(2, 100)   -->  9, 45, 55, 99
+kaprekar(101, 9000)   -->  297, 703, 999, 2223, 2728, 4879, 5050, 5292, 7272, 7777```
+
+Bonus: implement a version of this Kaprekar number detection for arbitrary bases, rather than just base-10.
