@@ -1,0 +1,23 @@
+*Challenge: Rotate 2D matrix*
+
+Given a 3x3 grid of data that looks like this:
+
+```
+[
+  ['x', 'x', 'x'],
+  ['x', 'x', 'x'],
+  ['x', 'x', 'x'],
+]
+```
+
+Write a function to rotate it clockwise or counterclockwise...
+
+Requirements:
+
+1. Write a function `rotateMatrix(matrix, direction)` where:
+    a. `matrix` is a 2D array representing the 3x3 grid
+    b. `direction` is a string: `'clockwise'` or `'counterclockwise'`
+2. Your function should return the rotated matrix.
+
+Extra credit:
+    - First parameter can be any size grid (5x5, 3x5, 130x150, etc)
