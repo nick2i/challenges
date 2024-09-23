@@ -1,0 +1,12 @@
+Our next programming challenge is to programmatically create an image with the following properties:
+* the *image contains a square*
+* the *square contains a circle*
+
+The image can be generated in whatever format you like, so long as it is reasonably easy to view. This includes e.g. HTML canvases, image files, an SVG file, etc. A couple examples are shown below
+
+ASCII art (https://en.wikipedia.org/wiki/ASCII_art) is not allowed.
+
+In particular, if you are interested in working with an image file manually (versus using an image library), the PPM, PGM, and PBM formats are quite accessible. Their wikipedia article (https://en.wikipedia.org/wiki/Netpbm#Description) contains a basic example of each as well as a description of the format. These formats are much simpler (and much less space-efficient) than compression-based formats such as PNG or JPEG.
+
+For extra credit:
+* the square and circle should be different, non-grayscale colors of your choice
