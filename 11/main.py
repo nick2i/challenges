@@ -11,20 +11,20 @@ image format is like:
 
 '''
 
-def generate_ppm_canvas(width, height):
+def generate_ppm_canvas(width, height, fillcolor=(0, 0, 0)):
     canvas = []
     for y in range(height):
         row = []
         for x in range(width):
-            row.append((0, 0, 0))
+            row.append(fillcolor)
         canvas.append(row)
     return canvas
 
 class PPMImage:
-    def __init__(self, width, height):
+    def __init__(self, width, height, fillcolor=(0, 0, 0)):
         self.width = width
         self.height = height
-        self.canvas = generate_ppm_canvas(width, height)
+        self.canvas = generate_ppm_canvas(width, height, fillcolor)
 
     def __getitem__(self, key):
         return self.canvas[key]
@@ -44,7 +44,7 @@ class PPMImage:
 
 def color_point(image, point, color=(0,0,0)):
     x, y = point
-    print(f"coloring point ({x}, {y})")
+    #print(f"coloring point ({x}, {y}) to color: {color}")
     image[y][x] = color
 
 def translate(point, translation):
@@ -54,7 +54,7 @@ def add_rect(image, corner0, corner1, thickness=1, color=(0,0,0)):
     x0, y0 = corner0
     x1, y1 = corner1
 
-    print("coloring horizontal sides")
+    #print("coloring horizontal sides")
     for x in range(x0, x1 + 1):
         # fill in (x0, y0 + i) to (x1, y0 + i) for i in range(thickness)
         # fill in (x0, y1 - i) to (x1, y1 - i) for i in range(thickness)
@@ -63,7 +63,7 @@ def add_rect(image, corner0, corner1, thickness=1, color=(0,0,0)):
         color_point(image, (x, y0), color)
         color_point(image, (x, y1), color)
 
-    print("coloring vertical sides")
+    #print("coloring vertical sides")
     for y in range(y0, y1 + 1):
         # fill in (x0 + i, y0) to (x0 + i, y1) for i in range(thickness)
         # fill in (x1 - i, y0) to (x1 - i, y1) for i in range(thickness)
@@ -102,30 +102,50 @@ def add_circle(image, center, radius, color=(0,0,0), thickness=1):
             x -= 1
 
 
+def random_circles(img, n, r):
+    import random
+    img.width, img.height
+    for i in range(n):
+        radius = random.randint(0, r)
+        x = random.randint(radius, img.width - radius - 1)
+        y = random.randint(radius, img.height - radius - 1)
+        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        add_circle(img, (x, y), radius, color=color)
+
+
 def main():
     WHITE = (255, 255, 255)
     RED = (255, 0, 0)
     BLUE = (0, 255, 0)
     GREEN = (0, 0, 255)
 
-    img = PPMImage(256, 256)
+    img_dim = 1024
+    fillcolor = (0, 0, 0)
+    img = PPMImage(img_dim, img_dim, fillcolor)
 
-    add_rect(img, (10,10), (245,245), color=WHITE)
-    add_rect(img, (11,11), (244,244), color=GREEN)
-    for i in range(25):
+    for i in range(50):
         color = (255 - 3 * i, 255 - 3 * i, 255 - 3 * i)
-        add_rect(img, (5 + i, 5 + i), (250 - i, 250 - i), color=color)
+        color = (150 - 3 * i, 150 - 3 * i, 100 + 3 * i)
+        add_rect(img, (5 + i, 5 + i), (img_dim - 6 - i, img_dim - 6 - i), color=color)
 
-    for i in range(40):
+    for i in range(45):
         color = (int(255 - i**1.5), 0, 0)
-        add_circle(img, (127, 127), 30 + i, color=color)
+        color = tuple(map(lambda x: min(255, x), color))
+        color = tuple(map(lambda x: max(0, x), color))
+
+        add_circle(img, (img_dim//2, img_dim//2), img_dim//9 + i, color=color)
+    for i in range(10):
+        color = (0, 255, 0)
+        add_circle(img, (img_dim//2, img_dim//2), img_dim//9 - i, color=color)
+
     #add_circle(img, (127, 127), 60, color=GREEN)
     #add_circle(img, (127, 127), 90, color=BLUE)
+    random_circles(img, 2000, img_dim//4)
 
     #print("output:")
     #print(img)
 
-    TEST_NUMBER = 5
+    TEST_NUMBER = 10
     TEST_OUTPUT = f"test-{TEST_NUMBER:03}.ppm"
     with open(TEST_OUTPUT, "w") as f:
         f.write(str(img))
