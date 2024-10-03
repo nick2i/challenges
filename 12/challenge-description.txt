@@ -1,0 +1,33 @@
+*Challenge: Compounding Interest and more...*
+
+Your task is to create two functions that deal with the power of compound interest. These functions will help simulate growth over time and handle scenarios involving regular withdrawals.
+
+_Part 1: Compound Interest Calculator_
+
+Write a function that takes in the following inputs:
+- Principal: The initial amount of money.
+- Rate of Return: The percentage return (tip: 401k typically can be 7%)
+- Years: The number of years for which the interest will compound.
+Your function should calculate the final amount after the specified number of years with compound interest applied annually.
+
+```
+calculateCompoundInterest(1000, 0.05, 10); // Output: 1628.89
+```
+
+_Part 2 (Bonus): Broke in X Years?_
+
+Create a second function that adds "annual withdrawals"
+
+Scenario... AI has taken our jobs, so we rely of our investment returns to survive :skull:
+
+Write a function that takes the following inputs:
+- Principal: The starting amount (assume a large value, over 1 million).
+- Rate of Return: The annual interest rate (expressed as a decimal). (401k typically can be 7%)
+- Years: The number of years over which the interest will compound.
+- Withdrawal: The fixed amount of money withdrawn at the end of each year. (like 100,000)
+This function should calculate how many years it will take before the account balance reaches $0 or below (i.e. you're broke), taking into account both the compound interest and annual withdrawals.
+
+```
+howManyYearsBeforeBroke(1000000, 0.07, 100, 100000); // Output: 14
+```
+
